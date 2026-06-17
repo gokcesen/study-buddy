@@ -1,3 +1,5 @@
+import ReactMarkdown from "react-markdown";
+
 import type { ChatMessage as ChatMessageType } from "@/types/chat";
 
 type ChatMessageProps = {
@@ -19,7 +21,29 @@ export function ChatMessage({ message }: ChatMessageProps) {
         <p className="mb-1 text-xs font-medium opacity-70">
           {isUser ? "You" : "Study Buddy"}
         </p>
-        <p>{message.content}</p>
+
+        {isUser ? (
+          <p>{message.content}</p>
+        ) : (
+          <div className="space-y-2">
+            <ReactMarkdown
+              components={{
+                strong: ({ children }) => (
+                  <strong className="font-semibold">{children}</strong>
+                ),
+                ul: ({ children }) => (
+                  <ul className="ml-4 list-disc space-y-1">{children}</ul>
+                ),
+                ol: ({ children }) => (
+                  <ol className="ml-4 list-decimal space-y-1">{children}</ol>
+                ),
+                p: ({ children }) => <p>{children}</p>,
+              }}
+            >
+              {message.content}
+            </ReactMarkdown>
+          </div>
+        )}
       </div>
     </div>
   );
