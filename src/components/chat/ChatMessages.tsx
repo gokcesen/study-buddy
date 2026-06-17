@@ -10,13 +10,13 @@ type ChatMessagesProps = {
 export function ChatMessages({ messages, isLoading }: ChatMessagesProps) {
   if (messages.length === 0) {
     return (
-      <div className="flex flex-1 items-center justify-center px-4 py-16 text-center">
+      <div className="flex flex-1 items-center justify-center px-3 py-10 text-center sm:px-4 sm:py-16">
         <div className="max-w-md">
           <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-900 text-2xl">
             🎓
           </div>
 
-          <h2 className="text-2xl font-semibold text-slate-950">
+          <h2 className="text-xl font-semibold text-slate-950 sm:text-2xl">
             What would you like to learn?
           </h2>
 
@@ -42,18 +42,19 @@ export function ChatMessages({ messages, isLoading }: ChatMessagesProps) {
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-2 py-4">
+    <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-1 py-3 sm:gap-4 sm:px-2 sm:py-4">
       {messages.map((message) => (
         <ChatMessage key={message.id} message={message} />
       ))}
+
       {isLoading && (
-      <div className="flex justify-start">
-        <div className="max-w-[80%] rounded-2xl bg-slate-100 px-4 py-3 text-sm leading-6 text-slate-500">
-          <p className="mb-1 text-xs font-medium opacity-70">Study Buddy</p>
-          <p>Thinking...</p>
+        <div className="flex justify-start">
+          <div className="max-w-[90%] rounded-2xl bg-slate-100 px-4 py-3 text-sm leading-6 text-slate-500 sm:max-w-[80%]">
+            <p className="mb-1 text-xs font-medium opacity-70">Study Buddy</p>
+            <p>Thinking...</p>
+          </div>
         </div>
-      </div>
-    )}
+      )}
     </div>
   );
 }
