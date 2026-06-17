@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { generateStudyBuddyReply } from "@/lib/gemini";
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -13,7 +14,9 @@ export async function POST(request: Request) {
   
   //await new Promise((resolve) => setTimeout(resolve, 1000));
 
+  const reply = await generateStudyBuddyReply(message);
+
   return NextResponse.json({
-    reply: `Study Buddy received: ${message}`,
+    reply,
   });
 }
