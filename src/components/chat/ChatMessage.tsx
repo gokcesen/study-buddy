@@ -1,4 +1,5 @@
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 import type { ChatMessage as ChatMessageType } from "@/types/chat";
 
@@ -25,8 +26,9 @@ export function ChatMessage({ message }: ChatMessageProps) {
         {isUser ? (
           <p>{message.content}</p>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-2 overflow-x-auto">
             <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
               components={{
                 strong: ({ children }) => (
                   <strong className="font-semibold">{children}</strong>
@@ -36,6 +38,21 @@ export function ChatMessage({ message }: ChatMessageProps) {
                 ),
                 ol: ({ children }) => (
                   <ol className="ml-4 list-decimal space-y-1">{children}</ol>
+                ),
+                table: ({ children }) => (
+                  <table className="my-3 w-full border-collapse text-left text-sm">
+                    {children}
+                  </table>
+                ),
+                th: ({ children }) => (
+                  <th className="border border-slate-300 bg-slate-200 px-3 py-2 font-semibold">
+                    {children}
+                  </th>
+                ),
+                td: ({ children }) => (
+                  <td className="border border-slate-300 px-3 py-2">
+                    {children}
+                  </td>
                 ),
                 p: ({ children }) => <p>{children}</p>,
               }}
