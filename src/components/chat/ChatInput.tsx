@@ -1,3 +1,5 @@
+const MAX_MESSAGE_LENGTH = 1000;
+
 type ChatInputProps = {
   input: string;
   onInputChange: (value: string) => void;
@@ -22,11 +24,14 @@ export function ChatInput({
       <input
         className="min-w-0 flex-1 bg-transparent px-2 text-sm text-slate-900 outline-none placeholder:text-slate-400"
         placeholder={
-          isLoading ? "Study Buddy is thinking..." : "Ask me something you want to learn..."
+          isLoading
+            ? "Study Buddy is thinking..."
+            : "Ask me something you want to learn..."
         }
         value={input}
         onChange={(event) => onInputChange(event.target.value)}
         disabled={isLoading}
+        maxLength={MAX_MESSAGE_LENGTH}
       />
 
       <button
