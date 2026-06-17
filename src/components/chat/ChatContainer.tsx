@@ -10,11 +10,12 @@ import { ChatMessages } from "./ChatMessages";
 export function ChatContainer() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const message = input.trim();
 
-    if (!message) {
+    if (!message || isLoading) {
       return;
     }
 
@@ -24,20 +25,46 @@ export function ChatContainer() {
       content: message,
     };
 
-    const assistantMessage: ChatMessageType = {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      content:
-        "This is a temporary answer. Soon, I will answer.",
-    };
-
-    setMessages((currentMessages) => [
-      ...currentMessages,
-      userMessage,
-      assistantMessage,
-    ]);
-
+    setMessages((currentMessages) => [...currentMessages, userMessage]);
     setInput("");
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Something went wrong.");
+      }
+
+      const assistantMessage: ChatMessageType = {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        content: data.reply,
+      };
+
+      setMessages((currentMessages) => [
+        ...currentMessages,
+        assistantMessage,
+      ]);
+    } catch {
+      const errorMessage: ChatMessageType = {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        content: "Sorry, something went wrong. Please try again.",
+      };
+
+      setMessages((currentMessages) => [...currentMessages, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -48,6 +75,7 @@ export function ChatContainer() {
         input={input}
         onInputChange={setInput}
         onSubmit={handleSubmit}
+        isLoading={isLoading}
       />
     </section>
   );

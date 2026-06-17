@@ -10,6 +10,8 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
+  
+  //await new Promise((resolve) => setTimeout(resolve, 1000));
 
   return NextResponse.json({
     reply: `Study Buddy received: ${message}`,
