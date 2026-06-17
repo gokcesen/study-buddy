@@ -4,9 +4,10 @@ import { ChatMessage } from "./ChatMessage";
 
 type ChatMessagesProps = {
   messages: ChatMessageType[];
+  isLoading: boolean;
 };
 
-export function ChatMessages({ messages }: ChatMessagesProps) {
+export function ChatMessages({ messages, isLoading }: ChatMessagesProps) {
   if (messages.length === 0) {
     return (
       <div className="flex flex-1 items-center justify-center px-4 py-16 text-center">
@@ -45,6 +46,14 @@ export function ChatMessages({ messages }: ChatMessagesProps) {
       {messages.map((message) => (
         <ChatMessage key={message.id} message={message} />
       ))}
+      {isLoading && (
+      <div className="flex justify-start">
+        <div className="max-w-[80%] rounded-2xl bg-slate-100 px-4 py-3 text-sm leading-6 text-slate-500">
+          <p className="mb-1 text-xs font-medium opacity-70">Study Buddy</p>
+          <p>Thinking...</p>
+        </div>
+      </div>
+    )}
     </div>
   );
 }

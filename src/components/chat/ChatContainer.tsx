@@ -69,7 +69,7 @@ export function ChatContainer() {
 
   return (
     <section className="flex flex-1 flex-col rounded-3xl border border-slate-200 bg-white/80 p-4 shadow-sm backdrop-blur">
-      <ChatMessages messages={messages} />
+      <ChatMessages messages={messages} isLoading={isLoading} />
 
       <ChatInput
         input={input}
